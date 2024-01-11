@@ -1,0 +1,20 @@
+-- 코드를 입력하세요
+# 서브쿼리 이용한 풀이
+
+# SELECT fp.category, price as max_price, fp.product_name FROM food_product fp
+# WHERE (fp.category, fp.price) IN
+# (SELECT category, max(price) as price
+#     FROM food_product
+#     WHERE category IN ('과자', '국', '김치', '식용유')
+#     GROUP BY category)
+# ORDER BY max_price DESC
+
+# JOIN에 서브쿼리로 임의테이블 생성한 풀이
+SELECT fp.category, fp.price, fp.product_name
+FROM food_product fp JOIN
+    (SELECT max(price) as max_price, category 
+     FROM food_product 
+     WHERE CATEGORY IN ("과자", "국", "김치", "식용유")
+     GROUP BY CATEGORY) b 
+ON fp.category = b.category AND fp.price = b.max_price
+ORDER BY price DESC
